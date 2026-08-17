@@ -825,6 +825,20 @@ def extract_uaa(path: str, query: str) -> BookURLInfo | None:
     return None
 
 
+@register_extractor(["uxxsw.com", "www.uxxsw.com"])
+def extract_uxxsw(path: str, query: str) -> BookURLInfo | None:
+    """Resolve 悠闲小说网 catalog and chapter URLs."""
+    if m := re.search(r"^/chapter/([A-Za-z0-9_-]+)\.html/?$", path):
+        return _make_info("uxxsw", m.group(1), None)
+    if m := re.search(
+        r"^/book/([A-Za-z0-9_-]+?)-(\d+)-\d+\.html/?$", path
+    ):
+        return _make_info("uxxsw", m.group(1), m.group(2))
+    if m := re.search(r"^/book/([A-Za-z0-9_-]+)-(\d+)\.html/?$", path):
+        return _make_info("uxxsw", m.group(1), m.group(2))
+    return None
+
+
 @register_extractor(["www.wanbengo.com"])
 def extract_wanbengo(path: str, query: str) -> BookURLInfo | None:
     if m := re.search("^/(\\d+)/(\\d+)\\.html$", path):
